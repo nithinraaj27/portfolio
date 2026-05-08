@@ -85,6 +85,11 @@
       #hero-typewriter { background: var(--title-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
       .hero-desc { font-size: 1.25rem; margin-bottom: 3rem; }
 
+      /* Give the hero title more room on large screens so it wraps in ~2 lines (not 3). */
+      @media (min-width: 1024px) {
+        .hero-content { max-width: 1100px; }
+      }
+
       /* Grid / Bento */
       .bento-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 1.5rem; align-items: start; }
       .bento-item { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 24px; padding: 2.5rem; position: relative; overflow: hidden; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
