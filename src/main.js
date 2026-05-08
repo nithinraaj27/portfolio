@@ -55,6 +55,17 @@ window.addEventListener('mousemove', (e) => {
   mouseY = (e.clientY / window.innerHeight) - 0.5;
 });
 
+// --- Theme Change Handling ---
+window.addEventListener('theme-changed', (e) => {
+  const isLight = e.detail.isLight;
+  const color = isLight ? '#2563eb' : '#3b82f6';
+  const opacity = isLight ? 0.4 : 0.2;
+  
+  particlesMaterial.color.set(color);
+  linesMaterial.color.set(color);
+  linesMaterial.opacity = opacity;
+});
+
 // Animation Loop
 const clock = new THREE.Clock();
 
