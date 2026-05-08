@@ -466,6 +466,48 @@
         </div>
 
         <div class="bento-grid">
+          <!-- Schema Guard — Open Source Tool -->
+          <div class="project-card reveal" style="grid-column: span 12; margin-bottom: 2rem; border-color: rgba(59,130,246,0.3);">
+            <img src="/images/kafka.png" class="project-image" alt="Schema Guard" style="opacity:0.15;">
+            <div class="project-content">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;">
+                <div>
+                  <div style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.3rem 0.8rem; background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.3); border-radius: 100px; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent-color); margin-bottom: 0.75rem;">
+                    <span style="width:5px;height:5px;border-radius:50%;background:var(--accent-color);display:inline-block;"></span> Open Source · Spring Boot Starter
+                  </div>
+                  <h3>Schema Guard 🛡️</h3>
+                  <p>Shift-Left Data Integrity for Apache Kafka.</p>
+                </div>
+                <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center;">
+                  <a href="/tools/schema-guard" class="contact-btn" style="padding: 0.6rem 1.5rem; font-size: 0.8rem; margin-bottom: 0;">Live Tool →</a>
+                  <a href="https://github.com/nithinraaj27/kafka-schema-guard" target="_blank" class="social-link" style="font-size: 0.7rem; padding: 0.3rem 0.8rem;">GitHub 🔗</a>
+                </div>
+              </div>
+              <div class="exp-tech">
+                <span class="tech-tag">Spring Boot</span><span class="tech-tag">Kafka</span><span class="tech-tag">AOP Proxy</span><span class="tech-tag">Resilience4j</span><span class="tech-tag">Caffeine Cache</span><span class="tech-tag">JSON Schema</span>
+              </div>
+              <div class="exp-expansion">
+                <div class="exp-expansion-content" style="padding-top: 2rem;">
+                  <div class="exp-detail-item">
+                    <strong>Poison Pill Prevention</strong>
+                    <p>Intercepts Kafka producer calls via a Java Dynamic Proxy, validating payloads against a remote JSON Schema Registry synchronously before any message reaches the broker. 🚫</p>
+                  </div>
+                  <div class="exp-detail-item">
+                    <strong>Resilience Engineering</strong>
+                    <p>Integrated Resilience4j Circuit Breaker with a fail-open strategy — if the Schema Registry is unavailable, the system maintains business continuity while logging structured warnings. ⚡</p>
+                  </div>
+                  <div class="exp-detail-item">
+                    <strong>High Performance</strong>
+                    <p>Caffeine in-memory caching minimises network round-trips to the registry. Configurable TTL ensures freshness without sacrificing throughput. 🏎️</p>
+                  </div>
+                  <div class="exp-detail-item">
+                    <strong>Plug & Play</strong>
+                    <p>Pure Spring Boot Auto-Configuration — zero code changes required in existing services. Add the dependency, configure topics in application.properties, and you're protected. 🧩</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
           <div class="project-card reveal" style="grid-column: span 12; margin-bottom: 2rem;">
             <img src="/images/substrax.png" class="project-image" alt="SubstraX">
             <div class="project-content">

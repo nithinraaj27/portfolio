@@ -1,8 +1,15 @@
 import { defineConfig } from 'vite';
+import { resolve } from 'path';
 
 export default defineConfig({
-  base: './', // Ensures paths work correctly on GitHub Pages
+  base: '/',
   build: {
     outDir: 'dist',
-  }
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, 'index.html'),
+        schemaGuard: resolve(__dirname, 'tools/schema-guard/index.html'),
+      },
+    },
+  },
 });

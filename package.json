@@ -12,6 +12,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "ajv": "^8.20.0",
+    "ajv-formats": "^3.0.1",
     "gsap": "^3.15.0",
     "lucide": "^1.14.0",
     "three": "^0.184.0",

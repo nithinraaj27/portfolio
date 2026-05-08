@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nithinraaj J | Backend Engineer & Distributed Systems</title>
+    <meta name="description" content="Professional portfolio of Nithinraaj J, Backend Engineer specializing in high-throughput microservices and distributed systems." />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+      body.light-theme {
+        --bg-color: #f8fafc;
+        --card-bg: rgba(255, 255, 255, 0.9);
+        --accent-color: #2563eb;
+        --accent-glow: rgba(37, 99, 235, 0.1);
+        --text-primary: #0f172a;
+        --text-secondary: #475569;
+        --border-color: rgba(0, 0, 0, 0.08);
+        --nav-bg: rgba(248, 250, 252, 0.8);
+        --nav-bg-scrolled: rgba(255, 255, 255, 0.95);
+        --title-gradient: linear-gradient(180deg, #0f172a 0%, #475569 100%);
+        --project-overlay: linear-gradient(to top, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.6) 100%);
+      }
+
+      :root {
+        --bg-color: #000000;
+        --card-bg: rgba(10, 10, 10, 0.6);
+        --accent-color: #3b82f6;
+        --accent-glow: rgba(59, 130, 246, 0.3);
+        --text-primary: #ffffff;
+        --text-secondary: #94a3b8;
+        --border-color: rgba(255, 255, 255, 0.1);
+        --nav-bg: rgba(0, 0, 0, 0.5);
+        --nav-bg-scrolled: rgba(0, 0, 0, 0.8);
+        --title-gradient: linear-gradient(180deg, #ffffff 0%, #94a3b8 100%);
+        --project-overlay: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 100%);
+        --font-main: 'Inter', sans-serif;
+        --font-heading: 'Outfit', sans-serif;
+        --nav-height: 80px;
+        --nav-height-scrolled: 60px;
+        --section-padding: 140px 0;
+      }
+
+      * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
+      html { scroll-behavior: smooth; }
+      body { background-color: var(--bg-color); color: var(--text-primary); font-family: var(--font-main); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+
+      #three-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+      
+      /* Cinematic Noise Overlay */
+      .noise { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; pointer-events: none; opacity: 0.03; mix-blend-mode: overlay; background: url('https://grainy-gradients.vercel.app/noise.svg'); }
+
+      .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+
+      /* Typography */
+      h1, h2, h3, h4 { font-family: var(--font-heading); font-weight: 700; letter-spacing: -0.02em; }
+      p { color: var(--text-secondary); }
+
+      /* Nav */
+      nav { position: fixed; top: 0; width: 100%; height: var(--nav-height); z-index: 1000; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid var(--border-color); display: flex; align-items: center; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); background: var(--nav-bg); }
+      nav.scrolled { height: var(--nav-height-scrolled); background: var(--nav-bg-scrolled); border-bottom-color: var(--accent-glow); }
+      .nav-inner { width: 100%; display: flex; justify-content: space-between; align-items: center; }
+      .logo { font-weight: 800; font-size: 1.25rem; letter-spacing: -1px; transition: transform 0.3s ease; }
+      nav.scrolled .logo { transform: scale(0.9); }
+      .nav-links { display: flex; gap: 2.5rem; align-items: center; transition: all 0.3s ease; }
+      
+      /* Theme Toggle */
+      #theme-toggle { background: none; border: 1px solid var(--border-color); color: var(--text-primary); cursor: pointer; padding: 8px; border-radius: 12px; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; }
+      #theme-toggle:hover { background: var(--accent-glow); border-color: var(--accent-color); }
+      .sun-icon { display: none; }
+      .light-theme .sun-icon { display: block; }
+      .light-theme .moon-icon { display: none; }
+      .nav-links a { text-decoration: none; color: var(--text-secondary); font-size: 0.875rem; font-weight: 500; transition: color 0.3s ease; position: relative; }
+      .nav-links a:hover { color: var(--accent-color); }
+      .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 1px; background: var(--accent-color); transition: width 0.3s ease; box-shadow: 0 0 10px var(--accent-color); }
+      .nav-links a:hover::after { width: 100%; }
+
+      /* Hero */
+      .hero { height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; }
+      .hero-content { text-align: center; max-width: 800px; }
+      .hero-tag { display: inline-block; padding: 0.5rem 1rem; background: rgba(59, 130, 246, 0.1); border: 1px solid var(--accent-color); color: var(--accent-color); border-radius: 100px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 2rem; }
+      .hero-title { font-size: clamp(3rem, 8vw, 5rem); margin-bottom: 1.5rem; line-height: 1.1; color: var(--text-primary); }
+      #hero-typewriter { background: var(--title-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+      .hero-desc { font-size: 1.25rem; margin-bottom: 3rem; }
+
+      /* Grid / Bento */
+      .bento-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 1.5rem; align-items: start; }
+      .bento-item { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 24px; padding: 2.5rem; position: relative; overflow: hidden; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+      .bento-item::before { content: ''; position: absolute; inset: 0; background: linear-gradient(45deg, transparent, rgba(255,255,255,0.03), transparent); transform: translateX(-100%); transition: transform 0.8s ease; }
+      .bento-item:hover::before { transform: translateX(100%); }
+
+      /* Timeline */
+      .experience-list { display: flex; flex-direction: column; gap: 4rem; }
+      .exp-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 24px; padding: 2.5rem; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+      .exp-card.active { border-color: var(--accent-color); box-shadow: 0 0 50px var(--accent-glow); margin-bottom: 2rem; }
+      
+      .exp-expansion { max-height: 0; opacity: 0; overflow: hidden; transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); width: 100%; }
+      .exp-card.active .exp-expansion, .project-card.active .exp-expansion { max-height: 2000px; opacity: 1; margin-top: 3rem; padding-top: 3rem; border-top: 1px solid rgba(255,255,255,0.1); }
+      
+      .exp-expansion-content { max-width: 900px; margin: 0 auto; text-align: left; position: relative; }
+      .exp-expansion-content h2 { font-size: 2.5rem; margin-bottom: 2.5rem; background: linear-gradient(to right, var(--text-primary), var(--accent-color)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+      
+      .exp-detail-item { margin-bottom: 2rem; border-left: 2px solid var(--accent-color); padding-left: 1.5rem; position: relative; z-index: 2; }
+      .exp-detail-item strong { color: var(--accent-color); display: block; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem; font-weight: 800; }
+      .exp-detail-item p { color: var(--text-secondary); font-size: 1.1rem; line-height: 1.6; }
+      
+      /* Glassy Flowing Effect */
+      .exp-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(45deg, transparent, rgba(59, 130, 246, 0.05), transparent); transform: translateX(-100%); transition: transform 0.8s ease; }
+      .exp-card:hover::before { transform: translateX(100%); }
+      
+      .exp-card.active::after { content: ''; position: absolute; inset: 0; border-radius: 24px; padding: 1px; background: linear-gradient(90deg, transparent, var(--accent-color), transparent); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; animation: flow 3s infinite linear; }
+      @keyframes flow { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+      .exp-header h3 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+      .exp-meta { display: flex; gap: 1rem; color: var(--accent-color); font-weight: 600; font-size: 0.875rem; margin-bottom: 1.5rem; }
+      .exp-tech { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem; }
+      .tech-tag { padding: 0.25rem 0.75rem; background: rgba(var(--text-primary-rgb), 0.05); border: 1px solid var(--border-color); border-radius: 100px; font-size: 0.75rem; color: var(--text-primary); }
+      .light-theme .tech-tag { background: rgba(0, 0, 0, 0.05); border-color: rgba(0, 0, 0, 0.1); }
+
+      /* Projects */
+      .project-card { position: relative; min-height: 400px; border-radius: 24px; overflow: hidden; border: 1px solid var(--border-color); transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); background: var(--card-bg); display: flex; flex-direction: column; }
+      .project-card.active { border-color: var(--accent-color); box-shadow: 0 0 50px var(--accent-glow); height: auto; }
+      .project-image { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.3; transition: transform 0.5s ease, opacity 0.5s ease; z-index: 0; filter: grayscale(30%) brightness(0.8); }
+      .project-card.active .project-image { opacity: 0.1; }
+      .light-theme .project-image { filter: grayscale(10%) brightness(1.1); opacity: 0.2; }
+      .project-card:hover .project-image { transform: scale(1.05); opacity: 0.45; }
+      .project-content { position: relative; width: 100%; padding: 3rem; z-index: 1; flex-grow: 1; display: flex; flex-direction: column; justify-content: flex-end; background: var(--project-overlay); transition: background 0.3s ease; }
+
+      /* Skills */
+      /* Modern Skills Bento */
+      .skills-bento { display: grid; grid-template-columns: repeat(12, 1fr); gap: 1.5rem; }
+      .skill-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 28px; padding: 2rem; position: relative; overflow: hidden; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px); box-shadow: inset 0 0 20px rgba(255,255,255,0.05); }
+      .skill-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(45deg, transparent, rgba(255,255,255,0.05), transparent); transform: translateX(-100%); transition: transform 0.8s ease; }
+      .skill-card:hover::before { transform: translateX(100%); }
+      .skill-card:hover { transform: translateY(-10px); border-color: var(--accent-color); box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 30px var(--accent-glow); background: rgba(var(--text-primary-rgb), 0.08); }
+      .light-theme .skill-card:hover { background: rgba(255, 255, 255, 0.95); }
+      .skill-card h3 { font-size: 0.9rem; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1.5rem; color: var(--accent-color); font-weight: 800; display: flex; align-items: center; gap: 0.75rem; }
+      .skill-card h3::before { content: ''; width: 4px; height: 16px; background: var(--accent-color); border-radius: 100px; }
+      .skill-tags-modern { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+      .tag-modern { padding: 0.5rem 1rem; background: rgba(var(--text-primary-rgb), 0.05); border: 1px solid var(--border-color); border-radius: 12px; font-size: 0.85rem; transition: all 0.3s ease; color: var(--text-secondary); backdrop-filter: blur(10px); }
+      .light-theme .tag-modern { background: rgba(0, 0, 0, 0.03); }
+      .skill-card:hover .tag-modern { border-color: rgba(255,255,255,0.15); background: rgba(255,255,255,0.08); color: var(--text-primary); }
+      .tag-modern:hover { background: var(--accent-color) !important; color: var(--bg-color) !important; transform: scale(1.1); border-color: transparent !important; box-shadow: 0 0 15px var(--accent-glow); }
+      
+      .section { padding: var(--section-padding); scroll-margin-top: 100px; }
+      .section-head { margin-bottom: 4rem; }
+      .section-head h2 { font-size: 3rem; margin-bottom: 1rem; }
+      .section-head p { font-size: 1.125rem; }
+
+      /* Flip Card */
+      .flip-card { perspective: 1200px; background: transparent; cursor: pointer; }
+      .flip-card-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 1.2s cubic-bezier(0.34, 1.56, 0.64, 1); transform-style: preserve-3d; min-height: 200px; }
+      .flip-card:hover .flip-card-inner { transform: rotateY(180deg); }
+      .flip-card-front, .flip-card-back { position: absolute; width: 100%; height: 100%; -webkit-backface-visibility: hidden; backface-visibility: hidden; border-radius: 24px; padding: 2rem; display: flex; flex-direction: column; justify-content: center; align-items: center; border: 1px solid var(--border-color); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+      .flip-card-front { background: var(--card-bg); color: var(--text-primary); }
+      .flip-card-back { background: var(--text-primary); color: var(--bg-color); transform: rotateY(180deg); border-color: var(--accent-color); padding: 1.5rem; text-align: left; }
+      .flip-card-back h4 { color: var(--accent-color); margin-bottom: 0.75rem; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; }
+      .flip-card-back p { color: var(--bg-color); font-size: 0.875rem; line-height: 1.6; }
+
+      /* Terminal UI Restore */
+      .terminal-container { background: #0f172a; border-radius: 16px; border: 1px solid var(--border-color); overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.5); margin-bottom: 3rem; font-family: 'Courier New', Courier, monospace; }
+      .terminal-header { background: #1e293b; padding: 12px 20px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+      .dot { width: 12px; height: 12px; border-radius: 50%; }
+      .dot.red { background: #ef4444; }
+      .dot.yellow { background: #f59e0b; }
+      .dot.green { background: #10b981; }
+      .terminal-title { margin-left: auto; margin-right: auto; color: #94a3b8; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+      .terminal-body { padding: 25px; min-height: 350px; max-height: 450px; overflow-y: auto; color: #3b82f6; font-size: 0.9rem; line-height: 1.5; text-align: left; }
+      .command-line { display: flex; align-items: center; }
+      .prompt { color: #10b981; white-space: nowrap; }
+      #terminal-input { background: transparent; border: none; color: #e2e8f0; font-family: inherit; font-size: inherit; flex: 1; margin-left: 10px; }
+      #terminal-input:focus { outline: none; }
+      .terminal-output { color: #e2e8f0; margin-bottom: 10px; white-space: pre-wrap; animation: fadeIn 0.3s ease; }
+      @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+      .light-theme .terminal-container { background: #1e293b; border-color: #334155; }
+      .footer-cta { font-size: 4rem; font-weight: 800; margin-bottom: 2rem; background: var(--title-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; min-height: 120px; }
+      .contact-btn { display: inline-block; padding: 1.25rem 3rem; background: var(--accent-color); color: #fff; text-decoration: none; border-radius: 100px; font-weight: 700; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 10px 30px rgba(59, 130, 246, 0.2); margin-bottom: 3rem; }
+      .contact-btn:hover { transform: translateY(-5px); box-shadow: 0 15px 40px var(--accent-glow); background: #2563eb; }
+      
+      .social-link { 
+        color: var(--text-primary); 
+        text-decoration: none; 
+        font-weight: 600; 
+        padding: 0.75rem 1.5rem; 
+        border-radius: 100px; 
+        border: 1px solid rgba(255, 255, 255, 0.1); 
+        background: rgba(255, 255, 255, 0.03); 
+        backdrop-filter: blur(20px); 
+        -webkit-backdrop-filter: blur(20px);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
+        display: inline-flex; 
+        align-items: center; 
+        gap: 0.75rem; 
+        font-size: 0.9rem;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      }
+      .social-link:hover { 
+        border-color: var(--accent-color); 
+        background: rgba(59, 130, 246, 0.2); 
+        color: var(--accent-color) !important; 
+        box-shadow: 0 10px 40px var(--accent-glow), inset 0 0 20px rgba(59, 130, 246, 0.1); 
+        transform: translateY(-5px) scale(1.05); 
+        backdrop-filter: blur(25px);
+      }
+      .light-theme .social-link:hover { 
+        background: rgba(37, 99, 235, 0.1);
+        color: var(--accent-color) !important;
+      }
+
+      /* Animations */
+      @keyframes float {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+        100% { transform: translateY(0px); }
+      }
+      
+      @keyframes bounce-subtle {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+      }
+
+      .bento-item:hover h2, .bento-item:hover h3 { animation: bounce-subtle 0.6s ease; }
+      .hero-title span { display: inline-block; animation: float 6s ease-in-out infinite; }
+      
+      .reveal { opacity: 0; transform: translateY(15px); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+      .reveal.visible { opacity: 1; transform: translateY(0); }
+      
+      .bw-rocket { filter: grayscale(1) brightness(1.5); display: inline-block; }
+
+      @media (max-width: 768px) {
+        :root { --section-padding: 4rem 1.5rem; }
+        .nav-links { display: none; }
+        .hero-title { font-size: 2.75rem; }
+        .hero-desc { font-size: 1rem; }
+        .footer-cta { font-size: 2.5rem; }
+        
+        /* Force all bento/grid items to full width */
+        .bento-item, .project-card, .skill-card, .exp-card { grid-column: span 12 !important; }
+        
+        .exp-header { width: 100%; }
+        .exp-card > div { flex-direction: column; gap: 1.5rem; }
+        .project-content > div { flex-direction: column; gap: 1rem; }
+        
+        .section-head h2 { font-size: 2.25rem; }
+        
+        .skills-bento { gap: 1rem; }
+        .skill-card { padding: 1.5rem; }
+      }
+    </style>
+    <script type="module" crossorigin src="/assets/main-O03ILw3V.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-wMinxHhO.js">
+  </head>
+  <body>
+    <canvas id="three-canvas"></canvas>
+
+    <nav>
+      <div class="container nav-inner">
+        <div class="logo">NJ.</div>
+        <div class="nav-links">
+          <a href="#experience">Experience</a>
+          <a href="#projects">Projects</a>
+          <a href="#skills">Skills</a>
+          <a href="#contact">Contact</a>
+          <button id="theme-toggle" aria-label="Toggle Theme">
+            <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+            <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <main>
+      <div class="noise"></div>
+      <!-- Hero -->
+      <section class="hero">
+        <div class="hero-content container">
+          <h1 class="hero-title"><span id="hero-typewriter">&nbsp;</span> <span class="bw-rocket">🚀</span></h1>
+          <p class="hero-desc reveal">I'm <strong>Nithinraaj J</strong>, a Backend Engineer dedicated to architecting high-scale products and innovative tools that bridge technical gaps. Passionate about crafting meaningful AI-driven solutions and exploring the frontiers of MCP, RAG, and NLP. 🛠️🤖</p>
+          <div class="reveal">
+            <a href="#projects" class="contact-btn">Explore Work</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Stats / About Bento -->
+      <section class="section container">
+        <div class="bento-grid">
+          <div class="bento-item reveal" style="grid-column: span 8;">
+            <h2>The Engineering Mindset 🧠</h2>
+            <p style="margin-top: 1rem;">Backend Engineer specializing in resilient, high-throughput distributed systems using Java, Go, and Kafka. Focused on cloud-native microservices, event-driven architectures, and Saga-based transaction management. I build scalable AWS data pipelines and automation frameworks that ensure 100% data integrity and peak system performance. ⚡⚙️</p>
+          </div>
+          <div class="bento-item reveal flip-card" style="grid-column: span 4; padding: 0;">
+            <div class="flip-card-inner">
+              <div class="flip-card-front">
+                <h3 style="font-size: 3rem; color: var(--accent-color);">70%</h3>
+                <p>Manual Workload Automated</p>
+              </div>
+              <div class="flip-card-back">
+                <h4>AI-Driven Automation</h4>
+                <p>Led development of SpotterGPT (NLP validation), boosting accuracy by 35% and slashing manual review time by 70%.</p>
+              </div>
+            </div>
+          </div>
+          <div class="bento-item reveal flip-card" style="grid-column: span 4; padding: 0;">
+            <div class="flip-card-inner">
+              <div class="flip-card-front">
+                <h3 style="font-size: 3rem; color: var(--accent-color);">45%</h3>
+                <p>Search Speed Improvement</p>
+              </div>
+              <div class="flip-card-back">
+                <h4>Pipeline Architecture</h4>
+                <p>Architected a real-time ingestion pipeline using Java and Kafka to stream enterprise datasets to AWS S3, utilizing AWS Glue and Athena for sub-second analytical querying.</p>
+              </div>
+            </div>
+          </div>
+          <div class="bento-item reveal flip-card" style="grid-column: span 4; padding: 0;">
+            <div class="flip-card-inner">
+              <div class="flip-card-front">
+                <h3 style="font-size: 1.5rem; color: var(--accent-color); margin-bottom: 0.5rem;">Monolith → Microservices</h3>
+                <p>Strategic Migration Lead</p>
+              </div>
+              <div class="flip-card-back">
+                <h4>Microservices Mastery</h4>
+                <p>Designed and deployed 6+ production-grade RESTful APIs, owning the end-to-end development of 3 core modules within a high-availability microservices architecture.</p>
+              </div>
+            </div>
+          </div>
+          <div class="bento-item reveal flip-card" style="grid-column: span 4; padding: 0;">
+            <div class="flip-card-inner">
+              <div class="flip-card-front">
+                <h3 style="font-size: 3rem; color: var(--accent-color);">100%</h3>
+                <p>Data Integrity Maintained</p>
+              </div>
+              <div class="flip-card-back">
+                <h4>System Reliability</h4>
+                <p>Delivered scalable features with 100% data integrity during service cutovers through modular isolation and robust SDLC practices.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Experience -->
+      <section id="experience" class="section container">
+        <div class="section-head reveal">
+          <h2>Experience</h2>
+          <p>The journey of building enterprise-grade solutions.</p>
+        </div>
+        <div class="experience-list">
+          <div class="exp-card reveal">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; width: 100%;">
+              <div class="exp-header">
+                <h3>Software Engineer 🛡️</h3>
+                <div class="exp-meta">
+                  <span>Securonix</span>
+                  <span>June 2023 — Present</span>
+                </div>
+                <p class="exp-summary">Leading architectural innovations in cloud-native microservices and AI-driven security automation. 🤖🛡️</p>
+              </div>
+              <div class="exp-tech">
+                <span class="tech-tag">Java</span><span class="tech-tag">Go</span><span class="tech-tag">Kafka</span><span class="tech-tag">AWS</span>
+              </div>
+            </div>
+            
+            <div class="exp-expansion">
+              <div class="exp-expansion-content">
+                <h2>Securonix Deep Dive</h2>
+                <div class="exp-detail-item">
+                  <strong>Tech Stack</strong>
+                  <p>Java, Go, Spring Boot, Kafka, AWS (EKS, EMR, S3, Glue), Redis, SQL, Spark.</p>
+                </div>
+                <div class="exp-detail-item">
+                  <strong>AI-Driven Automation</strong>
+                  <p>Led development of SpotterGPT (NLP validation), boosting accuracy by 35% and slashing manual review time by 70%.</p>
+                </div>
+                <div class="exp-detail-item">
+                  <strong>Cloud Data Lake Integration</strong>
+                  <p>Architected a real-time ingestion pipeline using Java and Kafka to stream enterprise datasets to AWS S3, utilizing AWS Glue (ETL) and Amazon Athena to enable high-performance, sub-second analytical querying.</p>
+                </div>
+                <div class="exp-detail-item">
+                  <strong>Microservices Mastery</strong>
+                  <p>Designed and deployed 6+ production-grade RESTful APIs, owning the end-to-end development of 3 core modules within a high-availability microservices architecture.</p>
+                </div>
+                <div class="exp-detail-item">
+                  <strong>System Reliability</strong>
+                  <p>Delivered scalable features with 100% data integrity during service cutovers through modular isolation and robust SDLC practices.</p>
+                </div>
+                <div class="exp-detail-item">
+                  <strong>Enterprise Security</strong>
+                  <p>Integrated OAuth 2.0 SSO across distributed services to secure sensitive enterprise data.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="exp-card reveal">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; width: 100%;">
+              <div class="exp-header">
+                <h3>Product Engineer 🚀</h3>
+                <div class="exp-meta">
+                  <span>Edgeverve (Infosys)</span>
+                  <span>2023 Aug - 2024 Jan</span>
+                </div>
+                <p class="exp-summary">Developed cloud-ready microservices and specialized in GenAI prompt engineering. ☁️⚡</p>
+              </div>
+              <div class="exp-tech">
+                <span class="tech-tag">Java</span><span class="tech-tag">Spring Boot</span><span class="tech-tag">Docker</span><span class="tech-tag">K8s</span><span class="tech-tag">Grafana</span><span class="tech-tag">GenAI</span>
+              </div>
+            </div>
+            <div class="exp-expansion">
+              <div class="exp-expansion-content">
+                <h2>Edgeverve Deep Dive</h2>
+                <div class="exp-detail-item">
+                  <strong>Tech Stack</strong>
+                  <p>Java, Spring Boot, Spring Cloud, Microservices, Docker, Kubernetes, Grafana, Amazon S3, Generative AI.</p>
+                </div>
+                <div class="exp-detail-item">
+                  <strong>Certifications & Training</strong>
+                  <p>Completed internal certifications in Java, Spring Boot, Spring Cloud, Microservices, and Generative AI & Prompt Engineering. Trained in A-to-A Architecture and scalable system design principles.</p>
+                </div>
+                <div class="exp-detail-item">
+                  <strong>Microservices Development</strong>
+                  <p>Worked on Spring Boot microservice modules, performing bug fixes and minor feature enhancements. Gained hands-on experience with Docker, Kubernetes, Grafana, and Amazon S3 for cloud-ready deployments.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="exp-card reveal">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; width: 100%;">
+              <div class="exp-header">
+                <h3>Software Engineer 📊</h3>
+                <div class="exp-meta">
+                  <span>Opentext (Microfocus)</span>
+                  <span>Nov 2021 — June 2022</span>
+                </div>
+                <p class="exp-summary">Optimized data ingestion pipelines and led high-performance database PoCs. 📈🏗️</p>
+              </div>
+              <div class="exp-tech">
+                <span class="tech-tag">Java</span><span class="tech-tag">Dropwizard</span><span class="tech-tag">Kafka</span><span class="tech-tag">PostgreSQL</span><span class="tech-tag">Docker</span>
+              </div>
+            </div>
+            <div class="exp-expansion">
+              <div class="exp-expansion-content">
+                <h2>Opentext Deep Dive</h2>
+                <div class="exp-detail-item">
+                  <strong>Tech Stack</strong>
+                  <p>Java, Dropwizard, Spring Boot, Kafka, PostgreSQL, AWS S3, Docker, Kubernetes.</p>
+                </div>
+                <div class="exp-detail-item">
+                  <strong>Data Pipeline Optimization</strong>
+                  <p>Built a Dropwizard REST API to process Kafka data into S3 Parquet files, improving search speed by 45% and standardizing datasets for high-performance analytical queries.</p>
+                </div>
+                <div class="exp-detail-item">
+                  <strong>Performance PoC</strong>
+                  <p>Spearheaded a performance-focused PoC using PostgreSQL and MongoDB Atlas, optimizing indexes to accelerate data retrieval for high-volume workloads while streamlining deployments via Docker and Kubernetes.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Projects -->
+      <section id="projects" class="section container">
+        <div class="section-head reveal">
+          <h2>Featured Projects</h2>
+          <p>Complex systems, simplified.</p>
+        </div>
+
+        <div class="bento-grid">
+          <!-- Schema Guard — Open Source Tool -->
+          <div class="project-card reveal" style="grid-column: span 12; margin-bottom: 2rem; border-color: rgba(59,130,246,0.3);">
+            <img src="/images/kafka.png" class="project-image" alt="Schema Guard" style="opacity:0.15;">
+            <div class="project-content">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;">
+                <div>
+                  <div style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.3rem 0.8rem; background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.3); border-radius: 100px; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent-color); margin-bottom: 0.75rem;">
+                    <span style="width:5px;height:5px;border-radius:50%;background:var(--accent-color);display:inline-block;"></span> Open Source · Spring Boot Starter
+                  </div>
+                  <h3>Schema Guard 🛡️</h3>
+                  <p>Shift-Left Data Integrity for Apache Kafka.</p>
+                </div>
+                <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center;">
+                  <a href="/tools/schema-guard" class="contact-btn" style="padding: 0.6rem 1.5rem; font-size: 0.8rem; margin-bottom: 0;">Live Tool →</a>
+                  <a href="https://github.com/nithinraaj27/kafka-schema-guard" target="_blank" class="social-link" style="font-size: 0.7rem; padding: 0.3rem 0.8rem;">GitHub 🔗</a>
+                </div>
+              </div>
+              <div class="exp-tech">
+                <span class="tech-tag">Spring Boot</span><span class="tech-tag">Kafka</span><span class="tech-tag">AOP Proxy</span><span class="tech-tag">Resilience4j</span><span class="tech-tag">Caffeine Cache</span><span class="tech-tag">JSON Schema</span>
+              </div>
+              <div class="exp-expansion">
+                <div class="exp-expansion-content" style="padding-top: 2rem;">
+                  <div class="exp-detail-item">
+                    <strong>Poison Pill Prevention</strong>
+                    <p>Intercepts Kafka producer calls via a Java Dynamic Proxy, validating payloads against a remote JSON Schema Registry synchronously before any message reaches the broker. 🚫</p>
+                  </div>
+                  <div class="exp-detail-item">
+                    <strong>Resilience Engineering</strong>
+                    <p>Integrated Resilience4j Circuit Breaker with a fail-open strategy — if the Schema Registry is unavailable, the system maintains business continuity while logging structured warnings. ⚡</p>
+                  </div>
+                  <div class="exp-detail-item">
+                    <strong>High Performance</strong>
+                    <p>Caffeine in-memory caching minimises network round-trips to the registry. Configurable TTL ensures freshness without sacrificing throughput. 🏎️</p>
+                  </div>
+                  <div class="exp-detail-item">
+                    <strong>Plug & Play</strong>
+                    <p>Pure Spring Boot Auto-Configuration — zero code changes required in existing services. Add the dependency, configure topics in application.properties, and you're protected. 🧩</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="project-card reveal" style="grid-column: span 12; margin-bottom: 2rem;">
+            <img src="/images/substrax.png" class="project-image" alt="SubstraX">
+            <div class="project-content">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                <div>
+                  <h3>SubstraX 💳</h3>
+                  <p>Event-Driven Payment Orchestration.</p>
+                </div>
+                <a href="https://github.com/nithinraaj27/substrax" target="_blank" class="social-link" style="font-size: 0.7rem; padding: 0.3rem 0.8rem;">GitHub 🔗</a>
+              </div>
+              <div class="exp-tech">
+                <span class="tech-tag">Spring Boot</span><span class="tech-tag">Kafka (Avro)</span><span class="tech-tag">Keycloak</span><span class="tech-tag">Redis</span>
+              </div>
+              
+              <div class="exp-expansion">
+                <div class="exp-expansion-content" style="padding-top: 2rem;">
+                  <div class="exp-detail-item">
+                    <strong>Event-Driven Architecture</strong>
+                    <p>Engineered a Spring Boot orchestration system using Kafka & Schema Registry for subscription billing with exactly-once processing. 🚀</p>
+                  </div>
+                  <div class="exp-detail-item">
+                    <strong>Distributed Transactions</strong>
+                    <p>Implemented Saga Pattern with Idempotency and Timeout handling to maintain consistency across Fraud and Payment services. ⚖️</p>
+                  </div>
+                  <div class="exp-detail-item">
+                    <strong>Security & Gateway</strong>
+                    <p>Secured inter-service traffic via API Gateway and Keycloak (JWT/M2M) for centralized OAuth2 authorization. 🔐</p>
+                  </div>
+                  <div class="exp-detail-item">
+                    <strong>Resilience & Observability</strong>
+                    <p>Integrated Resilience4j (Circuit Breakers) and Zipkin (Distributed Tracing) to ensure 99.9% fault tolerance. 📈</p>
+                  </div>
+                  <div class="exp-detail-item">
+                    <strong>Data Pipeline</strong>
+                    <p>Designed an immutable ledger pipeline from Kafka to Amazon S3 for financial reconciliation and audit logging. 📂</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="project-card reveal" style="grid-column: span 12; margin-bottom: 2rem;">
+            <img src="/images/kafka.png" class="project-image" alt="Kafka Orchestrator">
+            <div class="project-content">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                <div>
+                  <h3>Kafka Failure Orchestrator 🤖</h3>
+                  <p>AI-Driven Self-Healing Orchestrator.</p>
+                </div>
+                <a href="https://github.com/nithinraaj27/KafkaFailureOrchestrator" target="_blank" class="social-link" style="font-size: 0.7rem; padding: 0.3rem 0.8rem;">GitHub 🔗</a>
+              </div>
+              <div class="exp-tech">
+                <span class="tech-tag">Go</span><span class="tech-tag">Python (MCP)</span><span class="tech-tag">Kafka</span><span class="tech-tag">Claude AI</span>
+              </div>
+              
+              <div class="exp-expansion">
+                <div class="exp-expansion-content" style="padding-top: 2rem;">
+                  <div class="exp-detail-item">
+                    <strong>Microservices Architecture</strong>
+                    <p>Developed a high-performance event-driven ecosystem using Go (Gin) and Python (FastAPI), decoupled via Apache Kafka. 🏗️</p>
+                  </div>
+                  <div class="exp-detail-item">
+                    <strong>Autonomous Remediation</strong>
+                    <p>Engineered a "Self-Healing" loop utilizing an AI Decision Engine to automate failure analysis, reducing manual intervention for transient errors. 🧠</p>
+                  </div>
+                  <div class="exp-detail-item">
+                    <strong>Distributed Resilience</strong>
+                    <p>Implemented multi-stage recovery patterns (Retry/DLQ/Resolve) with Kafka Producers/Consumers, ensuring 100% data consistency. ⚖️</p>
+                  </div>
+                  <div class="exp-detail-item">
+                    <strong>Observability & UI</strong>
+                    <p>Built a real-time monitoring dashboard with Streamlit and PostgreSQL for live auditing of AI decisions and system health metrics. 📊</p>
+                  </div>
+                  <div class="exp-detail-item">
+                    <strong>Cloud-Native DevOps</strong>
+                    <p>Optimized deployment using Docker Compose, orchestrating multi-container environments with persistent storage and health-check dependencies. 🐳</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="project-card reveal" style="grid-column: span 12;">
+            <img src="/images/datalake.png" class="project-image" alt="Data Lake">
+            <div class="project-content">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                <div>
+                  <h3>Real-Time Data Lake 🌊</h3>
+                  <p>Medallion Architecture & Automated ETL.</p>
+                </div>
+                <a href="https://github.com/nithinraaj27/Datalake" target="_blank" class="social-link" style="font-size: 0.7rem; padding: 0.3rem 0.8rem;">GitHub 🔗</a>
+              </div>
+              <div class="exp-tech">
+                <span class="tech-tag">Kafka</span><span class="tech-tag">Spring Boot</span><span class="tech-tag">AWS (S3, Glue, Athena)</span><span class="tech-tag">Airflow</span><span class="tech-tag">Metabase</span>
+              </div>
+              
+              <div class="exp-expansion">
+                <div class="exp-expansion-content" style="padding-top: 2rem;">
+                  <div class="exp-detail-item">
+                    <strong>Data Lake Architecture</strong>
+                    <p>Architected a Medallion (Bronze/Silver/Gold) storage layer on Amazon S3 for real-time Kafka event ingestion and curated analytics. 🏗️</p>
+                  </div>
+                  <div class="exp-detail-item">
+                    <strong>ETL Orchestration</strong>
+                    <p>Automated end-to-end data processing using Apache Airflow DAGs and AWS Glue, reducing manual intervention and streamlining workflows. ⚙️</p>
+                  </div>
+                  <div class="exp-detail-item">
+                    <strong>Serverless Analytics</strong>
+                    <p>Implemented AWS Athena for high-performance SQL querying on S3 and utilized CTAS queries for efficient data partitioning. 📊</p>
+                  </div>
+                  <div class="exp-detail-item">
+                    <strong>Business Intelligence</strong>
+                    <p>Developed interactive BI dashboards in Metabase to visualize real-time KPIs for orders, payments, and user activity. 📈</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Skills -->
+      <section id="skills" class="section container">
+        <div class="section-head reveal">
+          <h2>Technical Arsenal 🛠️</h2>
+        </div>
+        
+        <div class="skills-bento">
+          <div class="skill-card reveal" style="grid-column: span 6;">
+            <h3>Programming Languages</h3>
+            <div class="skill-tags-modern">
+              <span class="tag-modern">Java</span><span class="tag-modern">Python</span><span class="tag-modern">Go</span><span class="tag-modern">SQL</span><span class="tag-modern">Javascript</span><span class="tag-modern">Dart</span><span class="tag-modern">HTML5</span><span class="tag-modern">CSS3</span>
+            </div>
+          </div>
+
+          <div class="skill-card reveal" style="grid-column: span 6;">
+            <h3>Cloud & Big Data</h3>
+            <div class="skill-tags-modern">
+              <span class="tag-modern">AWS (EKS, EMR)</span><span class="tag-modern">Azure AI</span><span class="tag-modern">Snowflake</span><span class="tag-modern">Kafka</span><span class="tag-modern">Spark</span><span class="tag-modern">Hadoop</span><span class="tag-modern">Airflow</span>
+            </div>
+          </div>
+
+          <div class="skill-card reveal" style="grid-column: span 4;">
+            <h3>Backend & API</h3>
+            <div class="skill-tags-modern">
+              <span class="tag-modern">Spring Boot</span><span class="tag-modern">Dropwizard</span><span class="tag-modern">JPA</span><span class="tag-modern">REST</span><span class="tag-modern">gRPC</span>
+            </div>
+          </div>
+
+          <div class="skill-card reveal" style="grid-column: span 4;">
+            <h3>Mobile & Web</h3>
+            <div class="skill-tags-modern">
+              <span class="tag-modern">Flutter</span><span class="tag-modern">Swift</span><span class="tag-modern">React</span><span class="tag-modern">Tailwind</span>
+            </div>
+          </div>
+
+          <div class="skill-card reveal" style="grid-column: span 4;">
+            <h3>DevOps & Tools</h3>
+            <div class="skill-tags-modern">
+              <span class="tag-modern">Docker</span><span class="tag-modern">Kubernetes</span><span class="tag-modern">Jenkins</span><span class="tag-modern">Git</span><span class="tag-modern">Linux</span>
+            </div>
+          </div>
+
+          <div class="skill-card reveal" style="grid-column: span 8;">
+            <h3>Core Engineering Concepts</h3>
+            <div class="skill-tags-modern">
+              <span class="tag-modern">Distributed Systems</span><span class="tag-modern">Saga Pattern</span><span class="tag-modern">LLD/HLD</span><span class="tag-modern">Design Patterns</span><span class="tag-modern">Microservices Architecture</span><span class="tag-modern">CI/CD Pipelines</span><span class="tag-modern">Algorithms & DS</span>
+            </div>
+          </div>
+
+          <div class="skill-card reveal" style="grid-column: span 4;">
+            <h3>Testing & QA</h3>
+            <div class="skill-tags-modern">
+              <span class="tag-modern">Selenium</span><span class="tag-modern">Cypress</span><span class="tag-modern">JUnit</span><span class="tag-modern">Mocking</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Achievements -->
+      <section id="achievements" class="section container">
+        <div class="section-head reveal">
+          <h2>Achievements 🏆</h2>
+        </div>
+        <div class="bento-grid">
+          <div class="bento-item reveal" style="grid-column: span 6;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+              <h3>Published Author 📚</h3>
+              <a href="https://www.amazon.com/dp/B095GRZS95/ref=tsm_1_fb_lk" target="_blank" class="social-link" style="font-size: 0.7rem; padding: 0.3rem 0.8rem;">Amazon 🔗</a>
+            </div>
+            <p style="margin-top: 1rem;">"How To Become a Pro in Java", ISBN: 979-8507025565. Sold 25+ copies across platforms. 📖✨</p>
+          </div>
+          <div class="bento-item reveal" style="grid-column: span 6;">
+            <h3>Patent Holder 📜</h3>
+            <p style="margin-top: 1rem;">Secured Smart Healthcare Ecosystem using Blockchain & IoT. 🏥🔐</p>
+          </div>
+          <div class="bento-item reveal" style="grid-column: span 12;">
+            <h3>Professional Certifications 📜</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-top: 1.5rem; width: 100%;">
+              <div class="exp-detail-item">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                  <strong>Apple Certiport</strong>
+                  <a href="https://www.credly.com/badges/72546710-4611-41bd-a426-dfb0f4d2cc0a/linked_in_profile" target="_blank" class="social-link" style="font-size: 0.6rem; padding: 0.2rem 0.6rem;">Verify 🔗</a>
+                </div>
+                <p>Certified Swift App Developer 🍎</p>
+              </div>
+              <div class="exp-detail-item">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                  <strong>Microsoft</strong>
+                  <a href="https://learn.microsoft.com/en-gb/users/nithinraajj-5453/credentials/65ab6cd3e5c22f5b?ref=https%3A%2F%2Fwww.linkedin.com%2F" target="_blank" class="social-link" style="font-size: 0.6rem; padding: 0.2rem 0.6rem;">Verify 🔗</a>
+                </div>
+                <p>Azure AI-900 Fundamentals ☁️</p>
+              </div>
+              <div class="exp-detail-item">
+                <strong>Engineering</strong>
+                <p>Certified in Java, Microservices, and Generative AI ☕️</p>
+              </div>
+            </div>
+          </div>
+          <div class="bento-item reveal" style="grid-column: span 12;">
+            <p>Specializing in high-throughput architectures using Java (Spring Boot), Go, and Kafka. Patent holder in Blockchain & IoT. Focused on building the next generation of resilient distributed systems. 🚀</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Interests -->
+      <section id="interests" class="section container">
+        <div class="section-head reveal">
+          <h2>Interest Area 💡</h2>
+        </div>
+        <div class="bento-grid">
+          <div class="bento-item reveal" style="grid-column: span 6;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+              <h3>YouTube Channel 📹</h3>
+              <a href="https://www.youtube.com/@Nithin.Raaj.J" target="_blank" class="social-link" style="font-size: 0.7rem; padding: 0.3rem 0.8rem;">Watch 📺</a>
+            </div>
+            <p style="margin-top: 1rem;">Sharing insights on Backend Engineering, System Design, and Emerging Tech. 🚀📺</p>
+          </div>
+          <div class="bento-item reveal" style="grid-column: span 6;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+              <h3>Medium Blog ✍️</h3>
+              <a href="https://medium.com/@nithinraajjp" target="_blank" class="social-link" style="font-size: 0.7rem; padding: 0.3rem 0.8rem;">Read 📖</a>
+            </div>
+            <p style="margin-top: 1rem;">Deep-diving into Microservices, Distributed Systems, and Java technical excellence. 📖💻</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Interactive Console -->
+      <section class="section container">
+        <div class="section-head reveal">
+          <h2>Core System Console 💻</h2>
+          <p>Direct interface to my technical world.</p>
+        </div>
+        <div class="terminal-container reveal">
+          <div class="terminal-header">
+            <div class="dot red"></div>
+            <div class="dot yellow"></div>
+            <div class="dot green"></div>
+            <div class="terminal-title">system-core / nithinraaj-portfolio</div>
+          </div>
+          <div class="terminal-body" id="terminal-body">
+            <div id="terminal-results">
+              <div class="terminal-output">Welcome to Nithinraaj's Core System [Version 2.0.4]</div>
+              <div class="terminal-output">Type 'help' to see available commands.</div>
+            </div>
+            <div class="command-line">
+              <span class="prompt">nithinraaj@macbook:~$</span><input type="text" id="terminal-input" autofocus spellcheck="false" autocomplete="off">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer / Contact -->
+      <footer id="contact" class="container">
+        <div class="footer-cta" id="footer-typewriter">&nbsp;</div>
+        
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 2rem;">
+          <a href="mailto:nithinraajjp@gmail.com" class="contact-btn reveal">Start a Conversation</a>
+          
+          <div class="reveal" style="text-align: center; margin-top: 2rem;">
+            <p style="font-size: 1.1rem; color: var(--text-primary); font-weight: 600; margin-bottom: 2rem;">nithinraajjp@gmail.com | +91 9655092382</p>
+            <div style="display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap;">
+              <a href="https://www.linkedin.com/in/nithinraaj-jayaprakash-8b252519b/" target="_blank" class="social-link">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                LinkedIn
+              </a>
+              <a href="https://github.com/nithinraaj27" target="_blank" class="social-link">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                GitHub
+              </a>
+              <a href="https://www.youtube.com/@Nithin.Raaj.J" target="_blank" class="social-link">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.42a2.78 2.78 0 0 0-1.94 2C1 8.11 1 12 1 12s0 3.89.46 5.58a2.78 2.78 0 0 0 1.94 2c1.72.42 8.6.42 8.6.42s6.88 0 8.6-.42a2.78 2.78 0 0 0 1.94-2C23 15.89 23 12 23 12s0-3.89-.46-5.58z"></path><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"></polygon></svg>
+                YouTube
+              </a>
+            </div>
+          </div>
+        </div>
+        
+        <div style="margin-top: 6rem; opacity: 0.5; font-size: 0.8rem;">
+          &copy; 2024 Nithinraaj J. Built with precision and distributed thinking.
+        </div>
+      </footer>
+    </main>
+
+    <script>
+      // Interactive Card Logic (Support for both Desktop Hover and Mobile Tap)
+      const interactiveCards = document.querySelectorAll('.exp-card, .project-card, .flip-card');
+
+      interactiveCards.forEach(card => {
+        // Desktop Hover
+        card.addEventListener('mouseenter', () => {
+          if (window.innerWidth > 768) card.classList.add('active');
+        });
+        card.addEventListener('mouseleave', () => {
+          if (window.innerWidth > 768) card.classList.remove('active');
+        });
+
+        // Mobile/Touch Tap-to-Toggle
+        card.addEventListener('click', (e) => {
+          if (window.innerWidth <= 768) {
+            // If clicking a link inside the card, don't toggle
+            if (e.target.tagName === 'A' || e.target.closest('a')) return;
+            
+            const wasActive = card.classList.contains('active');
+            
+            // Close all other active cards first
+            interactiveCards.forEach(c => c.classList.remove('active'));
+            
+            // Toggle current card
+            if (!wasActive) {
+              card.classList.add('active');
+            }
+          }
+        });
+      });
+
+      // Update CSS for Flip Cards to support .active class for mobile
+      // (Adding this to the flip-card logic)
+      const style = document.createElement('style');
+      style.textContent = `
+        @media (max-width: 768px) {
+          .flip-card.active .flip-card-inner { transform: rotateY(180deg); }
+          .exp-card.active, .project-card.active { border-color: var(--accent-color) !important; }
+        }
+      `;
+      document.head.appendChild(style);
+      // Reveal Animation on Scroll
+      const observerOptions = { threshold: 0.05, rootMargin: '0px 0px -50px 0px' };
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+      // Interactive Terminal Logic
+      const terminalInput = document.getElementById('terminal-input');
+      const terminalResults = document.getElementById('terminal-results');
+      const terminalBody = document.getElementById('terminal-body');
+
+      const commands = {
+        help: "Available commands:\n- whoami   : About me\n- projects : List key projects\n- skills   : Technical arsenal\n- contact  : Get in touch\n- socials  : LinkedIn / GitHub / YouTube\n- clear    : Clear terminal screen",
+        whoami: "Nithinraaj J\nBackend Engineer | Distributed Systems Specialist\nFocus: Scalability, Concurrency, and Fault-Tolerance.",
+        projects: "1. SubstraX - Payment Orchestration (Spring Boot/Kafka)\n2. Real-Time Data Lake - AWS/Metabase\n3. Schema-Guard - Spring Boot Starter",
+        skills: "Languages: Java, Go, Python, SQL\nInfra: Kafka, AWS, Docker, K8s, Redis",
+        contact: "Email: nithinraajjp@gmail.com\nPhone: +91 9655092382",
+        socials: "LinkedIn: nithinraaj-jayaprakash\nGitHub  : nithinraaj27\nYouTube : @Nithin.Raaj.J",
+        clear: "CLEAR_COMMAND"
+      };
+
+      terminalInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          const input = terminalInput.value.toLowerCase().trim();
+          if (!input) return;
+
+          // Add user command to display
+          const userLine = document.createElement('div');
+          userLine.innerHTML = `<span class="prompt">nithinraaj@macbook:~$</span> <span style="color: #e2e8f0">${input}</span>`;
+          terminalResults.appendChild(userLine);
+
+          // Process command
+          if (commands[input]) {
+            if (commands[input] === "CLEAR_COMMAND") {
+              terminalResults.innerHTML = '<div class="terminal-output">Screen cleared. Type \'help\' for commands.</div>';
+            } else {
+              const output = document.createElement('div');
+              output.className = 'terminal-output';
+              output.textContent = commands[input];
+              terminalResults.appendChild(output);
+            }
+          } else {
+            const error = document.createElement('div');
+            error.className = 'terminal-output';
+            error.style.color = '#ef4444';
+            error.textContent = `Command not found: ${input}. Type 'help' for available commands.`;
+            terminalResults.appendChild(error);
+          }
+
+          terminalInput.value = '';
+          terminalBody.scrollTop = terminalBody.scrollHeight;
+        }
+      });
+
+      // Keep focus on input if terminal body is clicked
+      terminalBody.addEventListener('click', () => terminalInput.focus());
+
+      // Footer Typewriter Logic
+      const footerText = "Let's build the future of systems.";
+      const footerTarget = document.getElementById('footer-typewriter');
+      let footerIdx = 0;
+
+      function typeFooter() {
+        if (footerIdx === 0) footerTarget.textContent = ""; // Clear placeholder
+        if (footerIdx < footerText.length) {
+          footerTarget.textContent += footerText[footerIdx];
+          footerIdx++;
+          setTimeout(typeFooter, 60);
+        }
+      }
+
+      const footerObserver = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+          typeFooter();
+          footerObserver.unobserve(entries[0].target);
+        }
+      }, { threshold: 0.5 });
+      footerObserver.observe(footerTarget);
+
+      // Hero Typewriter Logic
+      const heroText = "Architecting High-Throughput Systems.";
+      const heroTarget = document.getElementById('hero-typewriter');
+      let heroIdx = 0;
+
+      function typeHero() {
+        if (!heroTarget) return;
+        if (heroIdx === 0) heroTarget.textContent = "";
+        if (heroIdx < heroText.length) {
+          heroTarget.textContent += heroText[heroIdx];
+          heroIdx++;
+          setTimeout(typeHero, 50);
+        }
+      }
+
+      // Start hero typing
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => setTimeout(typeHero, 500));
+      } else {
+        setTimeout(typeHero, 500);
+      }
+
+      // Theme Toggle Logic
+      const themeToggle = document.getElementById('theme-toggle');
+      const body = document.body;
+
+      // Check for saved theme
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'light') {
+        body.classList.add('light-theme');
+      }
+
+      themeToggle.addEventListener('click', () => {
+        body.classList.toggle('light-theme');
+        const isLight = body.classList.contains('light-theme');
+        localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        
+        // Dispatch event for Three.js to update colors
+        window.dispatchEvent(new CustomEvent('theme-changed', { detail: { isLight } }));
+      });
+    </script>
+  </body>
+</html>

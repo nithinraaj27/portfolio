@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en" data-sg-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Schema Guard | Live Tester — StackForge Labs</title>
+  <meta name="description" content="Live interactive tester for Schema Guard Spring Boot Starter. Validate your Kafka payloads against JSON Schemas in real-time." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ── Variables ──────────────────────────────────────────────────────── */
+    :root {
+      --bg:         #000000;
+      --surface:    rgba(10,10,20,0.7);
+      --surface2:   rgba(20,20,35,0.8);
+      --border:     rgba(255,255,255,0.08);
+      --accent:     #3b82f6;
+      --accent-glow:rgba(59,130,246,0.25);
+      --text:       #f1f5f9;
+      --muted:      #94a3b8;
+      --success:    #22c55e;
+      --success-bg: rgba(34,197,94,0.08);
+      --error:      #ef4444;
+      --error-bg:   rgba(239,68,68,0.08);
+      --warn:       #f59e0b;
+      --font:       'Inter', system-ui, sans-serif;
+      --mono:       'JetBrains Mono', ui-monospace, monospace;
+      --heading:    'Outfit', sans-serif;
+      --radius:     16px;
+    }
+    [data-sg-theme="light"] {
+      --bg:         #f8fafc;
+      --surface:    rgba(255,255,255,0.9);
+      --surface2:   rgba(243,244,246,0.95);
+      --border:     rgba(0,0,0,0.08);
+      --text:       #0f172a;
+      --muted:      #64748b;
+    }
+
+    /* ── Reset & Base ───────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ── Animated Mesh Background ───────────────────────────────────────── */
+    .sg-bg {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 10%, rgba(59,130,246,0.12) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 50% at 80% 80%, rgba(99,102,241,0.08) 0%, transparent 70%);
+    }
+    .sg-noise {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      opacity: 0.025; mix-blend-mode: overlay;
+      background: url('https://grainy-gradients.vercel.app/noise.svg');
+    }
+
+    /* ── Layout ─────────────────────────────────────────────────────────── */
+    .sg-wrap { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 0 1.5rem 4rem; }
+
+    /* ── Nav ────────────────────────────────────────────────────────────── */
+    .sg-nav {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.25rem 0; gap: 1rem; flex-wrap: wrap;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 3rem;
+    }
+    .sg-nav__left { display: flex; align-items: center; gap: 1.5rem; }
+    .sg-back {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.8rem; font-weight: 500; color: var(--muted);
+      text-decoration: none; transition: color 0.2s ease;
+    }
+    .sg-back:hover { color: var(--accent); }
+    .sg-back svg { transition: transform 0.2s ease; }
+    .sg-back:hover svg { transform: translateX(-3px); }
+    .sg-logo { display: flex; align-items: center; gap: 0.75rem; }
+    .sg-logo__icon {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: rgba(59,130,246,0.12); border: 1px solid rgba(59,130,246,0.3);
+      display: flex; align-items: center; justify-content: center; font-size: 1.1rem;
+    }
+    .sg-logo__title { font-family: var(--heading); font-weight: 700; font-size: 1.1rem; letter-spacing: -0.02em; }
+    .sg-logo__sub { font-size: 0.7rem; color: var(--muted); font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; }
+    .sg-nav__right { display: flex; align-items: center; gap: 0.75rem; }
+    .sg-btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.5rem 1rem; border-radius: 10px;
+      font-size: 0.8rem; font-weight: 500; font-family: var(--font);
+      cursor: pointer; transition: all 0.2s ease; border: 1px solid var(--border);
+      text-decoration: none;
+    }
+    .sg-btn--ghost { background: transparent; color: var(--muted); }
+    .sg-btn--ghost:hover { background: var(--surface2); color: var(--text); border-color: rgba(255,255,255,0.15); }
+    .sg-btn--primary { background: var(--accent); color: #fff; border-color: transparent; }
+    .sg-btn--primary:hover { background: #2563eb; box-shadow: 0 0 20px var(--accent-glow); }
+    .sg-icon-btn {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: transparent; border: 1px solid var(--border);
+      color: var(--muted); cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s ease;
+    }
+    .sg-icon-btn:hover { background: var(--surface2); color: var(--text); }
+
+    /* ── Hero ───────────────────────────────────────────────────────────── */
+    .sg-hero { text-align: center; margin-bottom: 3rem; }
+    .sg-hero__badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.35rem 1rem; background: rgba(59,130,246,0.1);
+      border: 1px solid rgba(59,130,246,0.3); border-radius: 100px;
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 1.25rem;
+    }
+    .sg-hero__badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: pulse-dot 2s ease infinite; }
+    @keyframes pulse-dot { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.8); } }
+    .sg-hero h1 { font-family: var(--heading); font-size: clamp(2rem,5vw,3rem); font-weight: 800; letter-spacing: -0.03em; margin-bottom: 0.75rem; }
+    .sg-hero p { color: var(--muted); font-size: 1rem; max-width: 520px; margin: 0 auto; line-height: 1.7; }
+
+    /* ── Grid ───────────────────────────────────────────────────────────── */
+    .sg-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+    @media (max-width: 700px) { .sg-grid { grid-template-columns: 1fr; } }
+
+    /* ── Panel / Glass ──────────────────────────────────────────────────── */
+    .sg-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      transition: border-color 0.3s ease;
+    }
+    .sg-panel:focus-within { border-color: rgba(59,130,246,0.4); }
+    .sg-panel__head {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0.75rem 1rem; border-bottom: 1px solid var(--border);
+      background: var(--surface2);
+    }
+    .sg-panel__title { display: flex; align-items: center; gap: 0.5rem; }
+    .sg-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); }
+    .sg-dot--warn { background: var(--warn); }
+    .sg-panel__title h2 { font-size: 0.8rem; font-weight: 500; color: var(--text); }
+    .sg-badge {
+      font-family: var(--mono); font-size: 0.68rem; padding: 0.2rem 0.5rem;
+      border-radius: 6px; border: 1px solid var(--border); background: var(--bg);
+      color: var(--muted);
+    }
+    .sg-badge--blue { color: var(--accent); border-color: rgba(59,130,246,0.3); }
+    .sg-badge--warn { color: var(--warn); border-color: rgba(245,158,11,0.3); }
+    .sg-textarea {
+      width: 100%; min-height: 280px; background: transparent;
+      color: var(--text); font-family: var(--mono); font-size: 0.8rem;
+      line-height: 1.7; padding: 1rem; border: none; resize: vertical; outline: none;
+    }
+
+    /* ── Controls ───────────────────────────────────────────────────────── */
+    .sg-controls { display: flex; justify-content: center; margin-bottom: 1.25rem; }
+    .sg-run-btn {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      padding: 0.85rem 2.5rem; background: var(--accent); color: #fff;
+      font-family: var(--font); font-size: 0.95rem; font-weight: 600;
+      border: none; border-radius: 100px; cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+      box-shadow: 0 8px 25px rgba(59,130,246,0.25);
+    }
+    .sg-run-btn:hover { background: #2563eb; transform: translateY(-2px); box-shadow: 0 12px 35px rgba(59,130,246,0.4); }
+    .sg-run-btn:active { transform: translateY(0); }
+
+    /* ── Result Console ─────────────────────────────────────────────────── */
+    #sg-result-console {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); overflow: hidden;
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      transition: border-color 0.3s ease;
+    }
+    .sg-console--success { border-color: rgba(34,197,94,0.4); }
+    .sg-console--error   { border-color: rgba(239,68,68,0.4); }
+    .sg-console__head {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0.75rem 1rem; border-bottom: 1px solid var(--border);
+      background: var(--surface2);
+      font-size: 0.8rem; font-weight: 500; color: var(--muted);
+    }
+    .sg-status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); }
+    .sg-status-dot--success { background: var(--success); box-shadow: 0 0 8px var(--success); }
+    .sg-status-dot--error   { background: var(--error);   box-shadow: 0 0 8px var(--error); }
+    .sg-console__body {
+      padding: 1.25rem; font-family: var(--mono); font-size: 0.82rem;
+      min-height: 100px; white-space: pre-wrap; color: var(--muted);
+      line-height: 1.7;
+    }
+    .sg-console__body--success { color: var(--success); background: var(--success-bg); }
+    .sg-console__body--error   { color: var(--error);   background: var(--error-bg); }
+    @keyframes sg-shake {
+      0%,100% { transform: translateX(0); }
+      20%,60% { transform: translateX(-4px); }
+      40%,80% { transform: translateX(4px); }
+    }
+    .sg-shake { animation: sg-shake 0.35s ease; }
+
+    /* ── Chips / Features ───────────────────────────────────────────────── */
+    .sg-features { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem; margin-top: 2.5rem; }
+    .sg-chip {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.4rem 0.9rem; border-radius: 100px;
+      background: var(--surface); border: 1px solid var(--border);
+      font-size: 0.75rem; color: var(--muted); font-weight: 500;
+      backdrop-filter: blur(8px);
+    }
+    .sg-chip__dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); }
+
+    /* ── Modal ──────────────────────────────────────────────────────────── */
+    .sg-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,10,0.75);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 200; padding: 1rem;
+      transition: opacity 0.2s ease;
+    }
+    .sg-overlay.sg-hidden { opacity: 0; pointer-events: none; }
+    .sg-modal {
+      width: 100%; max-width: 600px; max-height: 90vh; overflow-y: auto;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); backdrop-filter: blur(24px);
+      transition: transform 0.2s ease;
+    }
+    .sg-overlay.sg-hidden .sg-modal { transform: scale(0.97) translateY(8px); }
+    .sg-modal__head {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border);
+    }
+    .sg-modal__head h2 { font-family: var(--heading); font-size: 1.1rem; font-weight: 700; }
+    .sg-close { background: none; border: none; color: var(--muted); font-size: 1.4rem; cursor: pointer; line-height: 1; }
+    .sg-close:hover { color: var(--text); }
+    .sg-modal__body { padding: 1.5rem; }
+    .sg-modal__body p { color: var(--muted); font-size: 0.875rem; line-height: 1.7; margin-bottom: 1.5rem; }
+    .sg-step { margin-bottom: 1.5rem; }
+    .sg-step h4 { font-size: 0.8rem; font-weight: 600; color: var(--text); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    .sg-step pre {
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1rem; overflow-x: auto;
+    }
+    .sg-step code { font-family: var(--mono); font-size: 0.8rem; color: var(--text); }
+    .sg-modal__note { text-align: center; font-size: 0.8rem; color: var(--success); font-weight: 600; margin-top: 1.5rem; }
+  </style>
+  <script type="module" crossorigin src="/assets/schemaGuard-Bg5nfGxB.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-wMinxHhO.js">
+</head>
+<body>
+  <div class="sg-bg"></div>
+  <div class="sg-noise"></div>
+
+  <div class="sg-wrap">
+    <!-- Nav -->
+    <nav class="sg-nav">
+      <div class="sg-nav__left">
+        <a href="/" class="sg-back">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          Portfolio
+        </a>
+        <div class="sg-logo">
+          <div class="sg-logo__icon">🛡️</div>
+          <div>
+            <div class="sg-logo__title">Schema Guard</div>
+            <div class="sg-logo__sub">Spring Boot Starter</div>
+          </div>
+        </div>
+      </div>
+      <div class="sg-nav__right">
+        <a href="https://github.com/nithinraaj27/kafka-schema-guard" target="_blank" class="sg-btn sg-btn--ghost">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+          GitHub
+        </a>
+        <button id="sg-btn-integrate" class="sg-btn sg-btn--ghost">🔌 Integrate</button>
+        <button id="sg-theme-toggle" class="sg-icon-btn" aria-label="Toggle theme">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Hero -->
+    <div class="sg-hero">
+      <div class="sg-hero__badge">Live Interactive Tester</div>
+      <h1>Kafka Schema Validator</h1>
+      <p>Paste your JSON Schema and a producer payload. Schema Guard intercepts the message and blocks any Poison Pill before it reaches the broker.</p>
+    </div>
+
+    <!-- Editors -->
+    <div class="sg-grid">
+      <div class="sg-panel">
+        <div class="sg-panel__head">
+          <div class="sg-panel__title">
+            <span class="sg-dot"></span>
+            <h2>JSON Schema Definition</h2>
+          </div>
+          <span class="sg-badge sg-badge--blue">your-schema-v1</span>
+        </div>
+        <textarea id="sg-schema-input" class="sg-textarea" spellcheck="false">{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "transactionId": { "type": "string", "format": "uuid" },
+    "amount":        { "type": "number", "minimum": 0 },
+    "currency":      { "type": "string", "minLength": 3, "maxLength": 3 }
+  },
+  "required": ["transactionId", "amount", "currency"]
+}</textarea>
+      </div>
+      <div class="sg-panel">
+        <div class="sg-panel__head">
+          <div class="sg-panel__title">
+            <span class="sg-dot sg-dot--warn"></span>
+            <h2>Producer Payload</h2>
+          </div>
+          <span class="sg-badge sg-badge--warn">Topic: payment-events</span>
+        </div>
+        <textarea id="sg-payload-input" class="sg-textarea" spellcheck="false">{
+  "transactionId": "123e4567-e89b-12d3-a456-426614174000",
+  "amount": 150.50
+  // "currency" is missing — Poison Pill!
+}</textarea>
+      </div>
+    </div>
+
+    <!-- Validate Button -->
+    <div class="sg-controls">
+      <button id="sg-validate-btn" class="sg-run-btn">
+        <span>🚀</span> Simulate Publish to Kafka
+      </button>
+    </div>
+
+    <!-- Result Console -->
+    <div id="sg-result-console" class="sg-panel">
+      <div class="sg-console__head">
+        <span>Terminal Output</span>
+        <span id="sg-status-dot" class="sg-status-dot"></span>
+      </div>
+      <div id="sg-result-output" class="sg-console__body">Waiting for event dispatch…</div>
+    </div>
+
+    <!-- Feature Chips -->
+    <div class="sg-features">
+      <span class="sg-chip"><span class="sg-chip__dot"></span> Synchronous Blocking Validation</span>
+      <span class="sg-chip"><span class="sg-chip__dot"></span> Resilience4j Circuit Breaker</span>
+      <span class="sg-chip"><span class="sg-chip__dot"></span> Caffeine Caching</span>
+      <span class="sg-chip"><span class="sg-chip__dot"></span> Zero Code Changes Required</span>
+      <span class="sg-chip"><span class="sg-chip__dot"></span> Spring Boot Auto-Configuration</span>
+    </div>
+  </div>
+
+  <!-- Integration Modal -->
+  <div id="sg-modal" class="sg-overlay sg-hidden">
+    <div class="sg-modal">
+      <div class="sg-modal__head">
+        <h2>🔌 Integration Guide</h2>
+        <button id="sg-close-modal" class="sg-close">&times;</button>
+      </div>
+      <div class="sg-modal__body">
+        <p>Schema Guard uses a Java Dynamic Proxy over the Kafka Producer to intercept messages <strong>before</strong> they reach the broker. If validation fails, a <code>SchemaValidationException</code> is thrown on the calling thread instantly.</p>
+        <div class="sg-step">
+          <h4>1. Add Maven Dependency</h4>
+          <pre><code>&lt;dependency&gt;
+    &lt;groupId&gt;com.schemaguard&lt;/groupId&gt;
+    &lt;artifactId&gt;schema-guard-spring-boot-starter&lt;/artifactId&gt;
+    &lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+        </div>
+        <div class="sg-step">
+          <h4>2. Configure application.properties</h4>
+          <pre><code>schema-guard.enabled=true
+schema-guard.registry-url=https://api.your-registry.com/schemas
+schema-guard.cache-ttl-minutes=60
+
+# Map topics → schema IDs
+schema-guard.topics.payment-events=your-schema-v1
+schema-guard.topics.order-events=order-schema-v2</code></pre>
+        </div>
+        <p class="sg-modal__note">✅ Zero code changes in your existing services. Pure Auto-Configuration.</p>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
