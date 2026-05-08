@@ -372,8 +372,29 @@
           <pre><code>&lt;dependency&gt;
     &lt;groupId&gt;com.schemaguard&lt;/groupId&gt;
     &lt;artifactId&gt;schema-guard-spring-boot-starter&lt;/artifactId&gt;
-    &lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt;
+    &lt;version&gt;1.0.0&lt;/version&gt;
 &lt;/dependency&gt;</code></pre>
+        </div>
+        <div class="sg-step">
+          <h4>1.1 Add GitHub Packages Repository (Required)</h4>
+          <p>This artifact is published to GitHub Packages (not Maven Central). Add the repository and authenticate Maven.</p>
+          <pre><code>&lt;repositories&gt;
+  &lt;repository&gt;
+    &lt;id&gt;github&lt;/id&gt;
+    &lt;url&gt;https://maven.pkg.github.com/nithinraaj27/kafka-schema-guard&lt;/url&gt;
+  &lt;/repository&gt;
+&lt;/repositories&gt;
+
+&lt;!-- ~/.m2/settings.xml --&gt;
+&lt;settings&gt;
+  &lt;servers&gt;
+    &lt;server&gt;
+      &lt;id&gt;github&lt;/id&gt;
+      &lt;username&gt;YOUR_GITHUB_USERNAME&lt;/username&gt;
+      &lt;password&gt;YOUR_GITHUB_TOKEN&lt;/password&gt;
+    &lt;/server&gt;
+  &lt;/servers&gt;
+&lt;/settings&gt;</code></pre>
         </div>
         <div class="sg-step">
           <h4>2. Configure application.properties</h4>
